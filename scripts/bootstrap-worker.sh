@@ -6,7 +6,6 @@ PACKAGES=(
   git
   unzip
   tar
-  curl
 )
 
 echo "Updating package metadata..."

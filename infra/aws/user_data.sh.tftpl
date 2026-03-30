@@ -20,7 +20,7 @@ retry() {
 }
 
 retry 5 dnf makecache --refresh
-retry 5 dnf install -y docker git unzip tar curl
+retry 5 dnf install -y docker git unzip tar
 
 systemctl enable docker
 systemctl restart docker
