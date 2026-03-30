@@ -7,7 +7,7 @@ This repo is now split into a small Bun workspace monorepo so you can build the 
 - `apps/web`: Next.js 16 frontend
 - `apps/api`: Elysia API running on Bun
 - `apps/cli`: Bun CLI for local automation and GitHub Actions
-- `packages/db`: Drizzle schema and Neon client
+- `packages/db`: Drizzle schema and CockroachDB client
 
 ## Run It
 
@@ -52,7 +52,7 @@ bunx drizzle-kit generate
 bunx drizzle-kit push
 ```
 
-The Drizzle configs resolve `apps/api/.env` from the repo root, so `DATABASE_URL` stays in one place for the API and DB tooling. Shell environment variables still win over file-based values.
+The DB scripts automatically load `apps/api/.env`, so keep `DATABASE_URL` there and the API plus migration commands will stay in sync. The web app also needs its own auth variables in `apps/web/.env.local`; copy from `apps/web/.env.example` and point both apps at the same CockroachDB cluster. Shell environment variables still win over file-based values.
 
 ## CLI
 
@@ -77,4 +77,5 @@ export CLIRCEL_API_URL=http://localhost:3001
 
 - Keep the warm-worker scheduler in the API, not in the Next app.
 - Do not add Redis until the database-backed lease flow is actually working.
-- Neon is fine for control-plane state. User workloads should still run on workers, not inside this API service.
+- Auth is handled in `apps/web` with Better Auth, GitHub OAuth, Drizzle, and CockroachDB.
+- User workloads should still run on workers, not inside this API service.
